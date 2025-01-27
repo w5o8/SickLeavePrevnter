@@ -1,16 +1,19 @@
 import telebot
 from telebot.types import ChatPermissions
 import re
-TOKEN = 'THE_TOKEN'
+TOKEN = 'ROKEN'
 bot = telebot.TeleBot(TOKEN)
 alert = '''
     تم إسكات أحد الأعضاء. يُرجى مراجعة الأحداث المتعلقة بهذا الإجراء واتخاذ القرار المناسب تجاهه.
     @x7mdNet @Kleja @HamzaIT2
     '''
-
+PROHIBITED_WORDS = [
+    ["سكليف"],
+    ["صحتي", "مرضية"]
+]
 def clean_message(message):
     message_text = message.text
-    PROHIBITED = r'[+=\-!@#$%^&*()ـ.,،/]'
+    PROHIBITED = r'[+=\-!@#$%^&*()ـ.,،/ـ\u064e\u064f\u0650\u0652\u0651\u064b\u064c\u064d]'
     cleaned_message = re.sub(PROHIBITED, '', message_text)
     return cleaned_message
 @bot.message_handler(commands=['start'])
@@ -32,14 +35,16 @@ def handle_messages(message):
     cleaned_message = clean_message(message)
     member_id = message.from_user.id
     chat_member = bot.get_chat_member(chat_id=message.chat.id, user_id=member_id)
-    if 'سكليف' in cleaned_message and chat_member.status not in ['administrator', 'creator']:
+    if chat_member.status not in ['administrator', 'creator']:
+        for arr in PROHIBITED_WORDS:
+            if all(word in cleaned_message for word in arr):
 
-        try:
-            bot.delete_message(chat_id=message.chat.id,message_id=message.message_id)
-            bot.restrict_chat_member(chat_id=message.chat.id, user_id=member_id, permissions=permissions)
-            bot.send_message(chat_id=message.chat.id,text=alert)
-        except Exception as e:
-            bot.send_message(chat_id=message.chat.id, text=f"حدث خطأ أثناء معالجة الطلب: {e}")
+                try:
+                    bot.delete_message(chat_id=message.chat.id,message_id=message.message_id)
+                    bot.restrict_chat_member(chat_id=message.chat.id, user_id=member_id, permissions=permissions)
+                    bot.send_message(chat_id=message.chat.id,text=alert)
+                except Exception as e:
+                        print("حصل خطأ")
 
 
 bot.infinity_polling()
