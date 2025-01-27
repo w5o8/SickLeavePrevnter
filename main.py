@@ -1,7 +1,7 @@
 import telebot
 from telebot.types import ChatPermissions
 import re
-TOKEN = '7530256696:AAFIfv7AX0usLW4OPcKasyJNW_PnE7RQE34'
+TOKEN = 'THE_TOKEN'
 bot = telebot.TeleBot(TOKEN)
 alert = '''
     تم إسكات أحد الأعضاء. يُرجى مراجعة الأحداث المتعلقة بهذا الإجراء واتخاذ القرار المناسب تجاهه.
