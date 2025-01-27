@@ -39,7 +39,7 @@ def handle_messages(message):
             bot.restrict_chat_member(chat_id=message.chat.id, user_id=member_id, permissions=permissions)
             bot.send_message(chat_id=message.chat.id,text=alert)
         except Exception as e:
-            print("The sender is Admin, Cant Delete it ")
+            print("Error while deleting the message ")
 
 
 bot.infinity_polling()
