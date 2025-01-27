@@ -39,7 +39,7 @@ def handle_messages(message):
             bot.restrict_chat_member(chat_id=message.chat.id, user_id=member_id, permissions=permissions)
             bot.send_message(chat_id=message.chat.id,text=alert)
         except Exception as e:
-            print("Error while deleting the message ")
+            bot.send_message(chat_id=message.chat.id, text=f"حدث خطأ أثناء معالجة الطلب: {e}")
 
 
 bot.infinity_polling()
